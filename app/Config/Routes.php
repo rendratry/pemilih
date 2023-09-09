@@ -5,6 +5,16 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
-$routes->get('import', 'Home::importPage');
-$routes->post('import_data_pemilih', 'Home::importPemilih');
+
+$routes->get('login', 'LoginController::index');
+$routes->get('logout', 'LoginController::logout');
+$routes->post('login-in', 'LoginController::login');
+
+$routes->group('dashboard/admin', static function ($routes) {
+    $routes->get('', 'DashboardController::index');
+    $routes->get('data-pemilih', 'DashboardController::pemilihView');
+    $routes->post('data-pemilih-filter', 'DashboardController::pemilihData');
+    $routes->post('updatechecklist-data-pemilih', 'DashboardController::updateChecklist');
+    $routes->get('import', 'DashboardController::importPage');
+    $routes->post('import_data_pemilih', 'DashboardController::importPemilih');
+});

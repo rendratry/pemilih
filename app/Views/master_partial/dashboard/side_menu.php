@@ -11,7 +11,7 @@
         </div>
         <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100 ">
-                <a class="nav-link" href="<?=base_url('admin/dashboard')?>">
+                <a class="nav-link" href="<?=base_url('dashboard/admin')?>">
                     <i class="fe fe-home fe-16"></i>
                     <span class="ml-3 item-text">Dashboard</span>
                 </a>
@@ -22,7 +22,7 @@
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-                <a class="nav-link" href="<?=base_url('staf')?>">
+                <a class="nav-link" href="<?=base_url('dashboard/admin/data-pemilih')?>">
                     <i class="fe fe-users fe-16"></i>
                     <span class="ml-3 item-text">Data Pemilih</span>
                 </a>
@@ -33,7 +33,7 @@
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-                <a class="nav-link" href="<?=base_url('import')?>">
+                <a class="nav-link" href="<?=base_url('dashboard/admin/import')?>">
                     <i class="fe fe-users fe-16"></i>
                     <span class="ml-3 item-text">Import Data Pemilih</span>
                 </a>

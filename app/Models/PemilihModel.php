@@ -7,4 +7,15 @@ class PemilihModel extends Model {
     protected $primaryKey       = 'id';
     protected $returnType       = 'object';
     protected $allowedFields = ['id', 'nama', 'jenis_kelamin', 'usia', 'provinsi', 'kabupaten_kota', 'kecamatan', 'desa_kelurahan', 'rt', 'rw', 'tps', 'checklist'];
+
+    public function getPemilihByKecamatanDesa($kecamatan, $desa_kelurahan) {
+        return $this->where('kecamatan', $kecamatan)
+                    ->where('desa_kelurahan', $desa_kelurahan)
+                    ->findAll();
+    }
+    public function getCountPemilihByKecamatan($kecamatan, $desa_kelurahan) {
+        return $this->where('kecamatan', $kecamatan)
+                    ->countAllResults();
+    }
+    
 }
