@@ -50,7 +50,7 @@
                                          <?php endif; ?>
                                         </td>
                                             <td>
-                                            <input type="checkbox" name="checklist[]" value="<?=$u->id?>">
+                                            <input type="checkbox" id="gridCheck<?=$u->id?>" name="checklist[]" value="<?=$u->id?>">
                                             </td>
                                         </tr>
                                         <?php endforeach?>
@@ -60,9 +60,6 @@
                                     <button id="submitBtn" type="submit" class="btn btn-primary">Update Checklist</button>
                                 </div>
                                 </form>
-                                <?php if (!empty($_POST['checklist'])): ?>
-                                    <p>Selected items for update: <?= implode(', ', $_POST['checklist']) ?></p>
-                                <?php endif; ?>
                                 <br>
                             </div>
                         </div>

@@ -13,6 +13,10 @@ class DashboardController extends BaseController
     {
         $data = [
             'title' => 'Pemilih',
+            'jumlah_pemilih_mejayan' => $this->pemilihmodel->getCountPemilihByKecamatan('MEJAYAN'),
+            'jumlah_pemilih_saradan' => $this->pemilihmodel->getCountPemilihByKecamatan('SARADAN'),
+            'jumlah_checklist_mejayan' => $this->pemilihmodel->getCountChecklistByKecamatan('MEJAYAN'),
+            'jumlah_checklist_saradan' => $this->pemilihmodel->getCountChecklistByKecamatan('SARADAN'),
         ];
         return view('dashboard/dashboard', $data);
     }
@@ -42,34 +46,42 @@ class DashboardController extends BaseController
         return view('dashboard/pemilih', $data);
     }
 
-    public function updateChecklist(){
-        $checkedItems = $this->request->getPost('checklist');
-
+    public function updateChecklist() {
+        $checkedItems = $this->request->getVar('checklist');
+    
         if (!empty($checkedItems)) {
-        foreach ($checkedItems as $id) {
-        // Ambil status checklist saat ini
-        $currentStatus = $this->pemilihmodel
-            ->where('id', $id)
-            ->get()
-            ->getRow()
-            ->checklist;
-
-        // Tentukan nilai baru berdasarkan status saat ini
-        $newStatus = !$currentStatus; // Ini akan mengubah true menjadi false dan sebaliknya
-
-        // Update kolom 'checklist' dengan nilai baru
-        $dataToUpdate = [
-            'checklist' => $newStatus,
-        ];
-
-        // Gantilah 'nama_tabel' dengan nama tabel yang sesuai dalam database Anda
-        $this->pemilihmodel
-            ->where('id', $id)
-            ->update($dataToUpdate);
+            foreach ($checkedItems as $id) {
+                // Ambil status checklist saat ini
+                $currentStatus = $this->pemilihmodel
+                    ->select('checklist')
+                    ->where('id', $id)
+                    ->first();
+    
+                if ($currentStatus) {
+                    // Tentukan nilai baru berdasarkan status saat ini
+                    $newStatus = !$currentStatus->checklist; // Ini akan mengubah true menjadi false dan sebaliknya
+    
+                    // Update kolom 'checklist' dengan nilai baru
+                    $dataToUpdate = [
+                        'checklist' => $newStatus,
+                    ];
+    
+                    // Gantilah 'nama_tabel' dengan nama tabel yang sesuai dalam database Anda
+                    $this->pemilihmodel
+                        ->where('id', $id)
+                        ->set($dataToUpdate)
+                        ->update();
+                }
+            }
+    
+            session()->setFlashdata('success', 'Update checklist berhasil');
+        } else {
+            session()->setFlashdata('error', 'Tidak ada update checklist');
         }
-        }
-
+    
+        return redirect()->to(base_url('dashboard/admin/data-pemilih'));
     }
+    
 
     public function importPage() {
         $data = [

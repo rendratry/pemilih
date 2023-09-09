@@ -13,8 +13,14 @@ class PemilihModel extends Model {
                     ->where('desa_kelurahan', $desa_kelurahan)
                     ->findAll();
     }
-    public function getCountPemilihByKecamatan($kecamatan, $desa_kelurahan) {
+    public function getCountPemilihByKecamatan($kecamatan) {
         return $this->where('kecamatan', $kecamatan)
+                    ->countAllResults();
+    }
+
+    public function getCountChecklistByKecamatan($kecamatan) {
+        return $this->where('kecamatan', $kecamatan)
+                    ->where('checklist', true)
                     ->countAllResults();
     }
     
