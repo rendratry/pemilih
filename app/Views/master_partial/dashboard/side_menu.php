@@ -31,5 +31,13 @@
         <p class="text-muted nav-heading mb-2">
             <span>Data Lainnya</span>
         </p>
+        <ul class="navbar-nav flex-fill w-100 mb-2">
+            <li class="nav-item w-100">
+                <a class="nav-link" href="<?=base_url('import')?>">
+                    <i class="fe fe-users fe-16"></i>
+                    <span class="ml-3 item-text">Import Data Pemilih</span>
+                </a>
+            </li>
+        </ul>
     </nav>
 </aside>
