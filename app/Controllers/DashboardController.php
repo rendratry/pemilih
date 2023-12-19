@@ -2,10 +2,12 @@
 
 namespace App\Controllers;
 use App\Models\PemilihModel;
+use App\Models\TabulasiModel;
 
 class DashboardController extends BaseController
 {
     public function __construct(){
+        $this->tabulasimodel = new TabulasiModel();
         $this->pemilihmodel = new PemilihModel();
         $this->validation = \Config\Services::validation();
     }
@@ -26,6 +28,30 @@ class DashboardController extends BaseController
             'title' => 'Pemilih',
         ];
         return view('dashboard/pemilih_index', $data);
+    }
+
+    public function tabulasiView() {
+        $data = [
+            'title' => 'Pemilih',
+        ];
+        return view('dashboard/tabulasi_index', $data);
+    }
+
+    public function tabulasiData(){
+        $kecamatan = $this->request->getVar('kecamatan');
+        $desa = $this->request->getVar('desa');
+
+        $tabulasi = $this->tabulasimodel->getDataTabulasiByKecamatanDesa($kecamatan, $desa);
+        if (!$tabulasi){
+            session()->setFlashdata('error', 'Data pemilih tidak ditemukan');
+            return redirect()->to(base_url('dashboard/admin/data-tabulasi'));
+        }
+
+        $data = [
+            'title' => 'Pemilih',
+            'tabulasi' => $tabulasi
+        ];
+        return view('dashboard/tabulasi', $data);
     }
 
     public function pemilihData() {

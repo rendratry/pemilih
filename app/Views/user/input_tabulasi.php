@@ -21,9 +21,24 @@
         </div>
         <!-- .col-12 -->
         <div class="col-12">
+        <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h2 class="page-title">Upload Tabulasi</h2>
+                        <h4>Desa : <?= $desa?> / TPS : <?= $tps ?></h4>
+                    </div>
+                </div>
             <div class="card shadow mb-4">
                 <div class="card-body text-center">
-                    <form method="POST" action="<?= base_url('dashboard/admin/import_data_pemilih') ?>"
+                <div class="col-auto">
+                      <span class="circle circle-sm bg-warning"><i
+                          class="fe fe-alert-circle fe-16 text-white"></i></span>
+                    </div>
+                    <div class="col">
+                      <medium><strong>Peringatan !</strong></medium>
+                      <div class="mb-2 text-muted medium"><strong class="mb-2 text-warning medium">Pastikan jumlah sesuai yang ada di lokasi TPS dan Foto, Jika ada kesalahan input hubungi Admin</strong>
+                      </div>
+                    <br>
+                    <form method="POST" action="<?= base_url('tabulasi/tps/input-tabulasi-submit') ?>"
                         enctype="multipart/form-data" id="input-tabulasi" onsubmit="disableButton()">
                         <div class="form-group row">
                             <label class="col-sm-12" for="jumlah_pemilih"><strong>Masukkan Jumlah
@@ -41,6 +56,8 @@
                                 <label class="custom-file-label" for="inputPhotoFile">Klik untuk unggah</label>
                             </div>
                         </div>
+                        <input hidden type="text" name="desa" id="desa" value="<?= $desa?>">
+                        <input hidden type="text" name="tps" id="tps" value="<?= $tps?>">
                         <div class="form-group mb-2">
                             <button id="submitBtn" type="submit" class="btn btn-primary">Submit</button>
                         </div>

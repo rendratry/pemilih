@@ -26,4 +26,10 @@ class TabulasiModel extends Model {
 
         return $builder->get()->getResultArray();
     }
+
+    public function getDataTabulasiByKecamatanDesa($kecamatan, $desa_kelurahan) {
+        return $this->where('kecamatan', $kecamatan)
+                    ->where('desa', $desa_kelurahan)
+                    ->findAll();
+    }
 }

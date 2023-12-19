@@ -21,19 +21,26 @@
         </div>
         <!-- .col-12 -->
         <div class="col-12">
+        <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h2 class="page-title">Pilih TPS</h2>
+                        <h4>Desa : <?= $desa?></h4>
+                    </div>
+                </div>
             <div class="card shadow mb-4">
                 <div class="card-body text-center">
                     <form method="POST" action="<?= base_url('tabulasi/tps/input-tabulasi') ?>"
                         enctype="multipart/form-data" id="importPemilih" onsubmit="disableButton()">
                         <div class="form-group row">
                             <div class="col-sm-12">
-                                <select class="custom-select" id="custom-select">
+                                <select class="custom-select" id="custom-select" name="tps">
                                     <option selected>Pilih TPS</option>
                                     <?php foreach ($tps as $d): ?>
                                     <option value="<?=$d['tps']?>"> TPS <?=$d['tps']?> </option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
+                            <input hidden type="text" name="desa" value=" <?= $desa?>">
                         </div>
                         <!-- <div class="form-group row">
                             <label for="inputPhotoFile" class="col-sm-3 col-form-label">Import Data Pemilih</label>

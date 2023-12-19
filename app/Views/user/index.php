@@ -21,13 +21,18 @@
         </div>
         <!-- .col-12 -->
         <div class="col-12">
+        <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h2 class="page-title">Pilih Desa</h2>
+                    </div>
+                </div>
             <div class="card shadow mb-4">
                 <div class="card-body text-center">
                     <form method="POST" action="<?= base_url('tabulasi/tps/pilih-tps') ?>"
                         enctype="multipart/form-data" id="importPemilih" onsubmit="disableButton()">
                         <div class="form-group row">
                             <div class="col-sm-12">
-                                <select class="custom-select" id="custom-select" name="desa">
+                                <select required class="custom-select" id="custom-select" name="desa">
                                     <option selected>Pilih Desa</option>
                                     <?php foreach ($desa as $d): ?>
                                     <option value="<?=$d['desa']?>"> <?=$d['desa']?> </option>
