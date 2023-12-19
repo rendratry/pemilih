@@ -9,6 +9,10 @@ class LoginController extends BaseController
         $this->validation = \Config\Services::validation();
         $this->user = new UserModel();
     }
+
+    public function index1(){
+        return redirect()->to(base_url('login'));
+    }
     public function index()
     {
         $session = session();
@@ -18,11 +22,12 @@ class LoginController extends BaseController
         }
 
         $data = [
-            'title' => 'Login Koskuy',
+            'title' => 'Login Aplikasi Pemilih',
         ];
         
         return view('auth/login', $data);
     }
+
 
     public function login(){
         $username = $this->request->getVar('username');
@@ -36,7 +41,7 @@ class LoginController extends BaseController
         }
         
         if (!password_verify($password, $user->password)) {
-            session()->setFlashdata('error', 'Username atau password salah!!');
+            session()->setFlashdata('error', 'Username atau password salah!');
             return redirect()->to(base_url('login'));
         }
         session()->set([
@@ -51,8 +56,8 @@ class LoginController extends BaseController
         case 'admin':
             return redirect()->to(base_url('dashboard/admin'));
             break;
-        case 'super':
-            return "Hai";
+        case 'mejayan' || 'saradan':
+            return redirect()->to(base_url('tabulasi/tps'));
             break;
         default:
         break;

@@ -59,7 +59,7 @@
                                     </a>
                                 </div>
                                 <div class="card-text my-2">
-                                    <p class="card-title my-0">Chekclist Kecamatan Mejayan</p>
+                                    <p class="card-title my-0">Checklist Kecamatan Mejayan</p>
                                     <p><strong><?= $jumlah_checklist_mejayan; ?></strong></p>
                                 </div>
                             </div> <!-- ./card-text -->

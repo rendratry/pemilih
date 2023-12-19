@@ -5,7 +5,7 @@
       <div class="row align-items-center h-100">
         <form method="POST" action="<?= base_url('login-in') ?>" class="col-lg-3 col-md-4 col-10 mx-auto text-center">
           <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
-          <img src="<?= base_url('../assets/assets/images/logo-old.png') ?>" alt="" width="100" height="100">
+          <img src="<?= base_url('../assets/assets/images/kotak-suara.png') ?>" alt="" width="100" height="100">
               <g>
                 <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
                 <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
@@ -27,7 +27,7 @@
               <input type="checkbox" value="remember-me"> Stay logged in </label>
           </div>
           <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-          <p class="mt-5 mb-3 text-muted">© Koskuy 2023</p>
+          <p class="mt-5 mb-3 text-muted">© Pemilih 2023</p>
         </form>
       </div>
     </div>

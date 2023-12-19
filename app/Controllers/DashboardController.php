@@ -90,6 +90,7 @@ class DashboardController extends BaseController
         return view('dashboard/import_data', $data);
     }
 
+    //IMPORT DEFAULT PRODUCTION
     public function importPemilih() {
         $kecamatan = $this->request->getVar('kecamatan');
         $file = $this->request->getFile('excel_file');
@@ -142,10 +143,73 @@ class DashboardController extends BaseController
             }
     
             session()->setFlashdata('success', 'Data pemilih berhasil diimpor');
-            return redirect()->to(base_url('import'));
+            return redirect()->to(base_url('dashboard/admin/import'));
         } else {
             return redirect()->back()->with('error', 'Format file Excel tidak valid.');
         }
     }
 
+
+
+
+
+    // IMPORT CUSTOM DISINI
+    public function importPemilihCustom() {
+        $kecamatan = $this->request->getVar('kecamatan');
+        $file = $this->request->getFile('excel_file');
+        
+        $extension = $file->getClientExtension();
+        if($extension == 'xlsx' || $extension == 'xls'){
+            if($extension == 'xls'){
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+            }else{
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+            }
+       
+            $spreadsheet = $reader->load($file);
+
+            $sheets = $spreadsheet->getAllSheets(); // Mendapatkan semua sheet dalam file Excel
+            $tps = 1; // Inisialisasi nilai TPS
+    
+            foreach ($sheets as $sheet) {
+                $dataPemilih = $sheet->toArray();
+                //$i adalah mulai data
+                for ($i = 5; $i < count($dataPemilih); $i++) {
+                    $nama = $dataPemilih[$i][1]; // Kolom Nama (B)
+                    $jenis_kelamin = $dataPemilih[$i][2]; // Kolom Jenis Kelamin (C)
+                    $usia = $dataPemilih[$i][3]; // Kolom Usia (D)
+                    $desa_kelurahan = $dataPemilih[$i][4]; // Kolom Desa/Kelurahan (E)
+                    $rt = $dataPemilih[$i][5]; // Kolom RT (F)
+                    $rw = $dataPemilih[$i][6]; // Kolom RW (G)
+    
+                    // Proses insert ke dalam database sesuai dengan data yang telah diambil
+                    // Gantilah query dan model sesuai dengan struktur dan kebutuhan database Anda
+                    $pemilihModel = new PemilihModel(); // Gantilah dengan nama model yang sesuai
+                    $data = [
+                        'nama' => $nama,
+                        'jenis_kelamin' => $jenis_kelamin,
+                        'usia' => $usia,
+                        'provinsi' => 'JAWA TIMUR',
+                        'kabupaten_kota' => 'MADIUN',
+                        'kecamatan' => $kecamatan,
+                        'desa_kelurahan' => $desa_kelurahan,
+                        'rt' => $rt,
+                        'rw' => $rw,
+                        'tps' => $tps,
+                        'checklist' => false// Menggunakan nilai TPS yang sesuai
+                    ];
+    
+                    // Insert data ke dalam database
+                    $pemilihModel->insert($data);
+                }
+    
+                $tps++; // Tambahkan nilai TPS untuk sheet berikutnya
+            }
+    
+            session()->setFlashdata('success', 'Data pemilih berhasil diimpor');
+            return redirect()->to(base_url('dashboard/admin/import'));
+        } else {
+            return redirect()->back()->with('error', 'Format file Excel tidak valid.');
+        }
+    }
 }
