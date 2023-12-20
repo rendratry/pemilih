@@ -27,6 +27,20 @@ class TabulasiModel extends Model {
         return $builder->get()->getResultArray();
     }
 
+    public function getIdByDesaTps($desa, $tps){
+        $result = $this->select('id')
+                       ->where('desa', $desa)
+                       ->where('tps', $tps)
+                       ->first();
+    
+        if ($result) {
+            return $result->id;
+        } else {
+            // Tambahkan penanganan kesalahan jika perlu
+            return null;
+        }
+    }
+
     public function getDataTabulasiByKecamatanDesa($kecamatan, $desa_kelurahan) {
         return $this->where('kecamatan', $kecamatan)
                     ->where('desa', $desa_kelurahan)

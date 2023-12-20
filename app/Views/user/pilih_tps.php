@@ -40,7 +40,7 @@
                                     <?php endforeach; ?>
                                 </select>
                             </div>
-                            <input hidden type="text" name="desa" value=" <?= $desa?>">
+                            <input hidden type="text" name="desa" value="<?= $desa?>">
                         </div>
                         <!-- <div class="form-group row">
                             <label for="inputPhotoFile" class="col-sm-3 col-form-label">Import Data Pemilih</label>

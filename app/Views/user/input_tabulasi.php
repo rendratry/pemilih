@@ -38,26 +38,26 @@
                       <div class="mb-2 text-muted medium"><strong class="mb-2 text-warning medium">Pastikan jumlah sesuai yang ada di lokasi TPS dan Foto, Jika ada kesalahan input hubungi Admin</strong>
                       </div>
                     <br>
-                    <form method="POST" action="<?= base_url('tabulasi/tps/input-tabulasi-submit') ?>"
+                    <form method="POST" onsubmit="disableButton()" action="<?= base_url('tabulasi/tps/input-tabulasi-submit') ?>"
                         enctype="multipart/form-data" id="input-tabulasi" onsubmit="disableButton()">
                         <div class="form-group row">
                             <label class="col-sm-12" for="jumlah_pemilih"><strong>Masukkan Jumlah
                                     Pemilih</strong></label>
                             <div class="col-sm-12">
-                                <input name="jumlah_pemilih" type="number" class="form-control" id="jumlah_pemilih"
+                                <input required name="jumlah_pemilih" type="number" class="form-control" id="jumlah_pemilih"
                                     rows="2" placeholder="Input Disini"></input>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-12" for="inputPhotoFile"><strong>Unggah Foto Bukti</strong></label>
                             <div class="col-sm-12">
-                                <input type="file" class="custom-file-input" id="inputPhotoFile" name="photo_file"
+                                <input required type="file" class="custom-file-input" id="inputPhotoFile" name="photo_file"
                                     onchange="updateFileName(this)">
                                 <label class="custom-file-label" for="inputPhotoFile">Klik untuk unggah</label>
                             </div>
                         </div>
-                        <input hidden type="text" name="desa" id="desa" value="<?= $desa?>">
-                        <input hidden type="text" name="tps" id="tps" value="<?= $tps?>">
+                        <input hidden type="text" name="desa" id="desa" value="<?=$desa?>">
+                        <input hidden type="text" name="tps" id="tps" value="<?=$tps?>">
                         <div class="form-group mb-2">
                             <button id="submitBtn" type="submit" class="btn btn-primary">Submit</button>
                         </div>
@@ -67,5 +67,18 @@
         </div>
     </div>
 </main>
+<script>
+    function disableButton() {
+        var submitBtn = document.getElementById("submitBtn");
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submiting...';
+        submitBtn.disabled = true;
+    }
+    function updateFileName(input) {
+        var fileName = input.value.split("\\").pop();
+        var label = input.nextElementSibling;
+        label.innerHTML = fileName;
+    }
+
+</script>
 <!-- .col-12 -->
 <?php echo $this->include('master_partial/dashboard/footer'); ?>

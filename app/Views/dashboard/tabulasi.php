@@ -36,7 +36,7 @@
                                         <td><?=$u->desa?></td>
                                         <td><?=$u->tps?></td>
                                         <td><?=$u->hasil?></td>
-                                        <td><?=$u->foto?></td>
+                                        <td><a href="<?=base_url('tabulasi_assets/' . $u->foto)?>" target="_blank" class="fe fe-image fe-16"></a></td>
                                         <?php endforeach?>
                                     </tbody>
                                 </table>

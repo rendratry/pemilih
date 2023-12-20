@@ -64,14 +64,14 @@ class TabulasiController extends BaseController {
             return redirect()->to(base_url('tabulasi/tps'))->with('status_icon', 'error')->with('status_text', 'Gagal Upload, Mohon Ulangi Kembali');
         }
 
-        $id = $this->tabulasimodel->where('desa', $desa)->where('tps', $tps)->first();
+        $id = $this->tabulasimodel->getIdByDesaTps($desa, $tps);
         $data = [
-            'jumlah' => $jumlah,
+            'hasil' => $jumlah,
             'foto' => $file_nama
         ];
 
         if ($id) {
-            $insert = $this->tabulasimodel->update($id->id, $data);
+            $insert = $this->tabulasimodel->update($id, $data);
             if ($insert){
                 return redirect()->to(base_url('tabulasi/tps'))->with('status_icon', 'success')->with('status_text', 'Data Berhasil Diinput');
             } 
