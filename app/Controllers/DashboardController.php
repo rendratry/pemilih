@@ -238,4 +238,12 @@ class DashboardController extends BaseController
             return redirect()->back()->with('error', 'Format file Excel tidak valid.');
         }
     }
+
+    public function quickCount(){
+        $data = [
+            'title' => 'Quick Count',
+        ];
+        return view('dashboard/quick_count', $data);
+    }
+
 }

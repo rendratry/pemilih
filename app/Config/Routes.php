@@ -20,6 +20,7 @@ $routes->group('dashboard/admin', static function ($routes) {
     $routes->get('', 'DashboardController::index', ['filter' => 'role:admin']);
     $routes->get('data-pemilih', 'DashboardController::pemilihView', ['filter' => 'role:admin']);
     $routes->get('data-tabulasi', 'DashboardController::tabulasiView', ['filter' => 'role:admin']);
+    $routes->get('quick-count', 'DashboardController::quickCount', ['filter' => 'role:admin']);
     $routes->post('data-tabulasi-detail', 'DashboardController::tabulasiData', ['filter' => 'role:admin']);
     $routes->post('data-pemilih-filter', 'DashboardController::pemilihData', ['filter' => 'role:admin']);
     $routes->post('updatechecklist-data-pemilih', 'DashboardController::updateChecklist', ['filter' => 'role:admin']);
