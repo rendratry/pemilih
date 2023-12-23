@@ -19,6 +19,15 @@ class TabulasiModel extends Model
 
         return $builder->get()->getResultArray();
     }
+
+    public function getNamaDesaAll()
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('desa');
+        $builder->groupBy('desa');
+
+        return $builder->get()->getResultArray();
+    }
     public function getTpsByDesa($desa)
     {
         $builder = $this->db->table($this->table);

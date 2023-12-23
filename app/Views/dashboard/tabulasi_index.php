@@ -31,7 +31,12 @@
                                     </div>
                                     <div class="form-group mb-3">
                         <label for="simpleinput">Desa</label>
-                        <input type="text" id="simpleinput" placeholder="Masukkan Nama Desa" name="desa" class="form-control" required>
+                        <select required class="custom-select" id="custom-select" name="desa">
+                                    <option selected>Pilih Desa</option>
+                                    <?php foreach ($desa as $d): ?>
+                                    <option value="<?=$d['desa']?>"> <?=$d['desa']?> </option>
+                                    <?php endforeach; ?>
+                                </select>
                       </div>
                       <div id="formContainer">
                       <!-- Kontainer untuk menampilkan elemen form -->

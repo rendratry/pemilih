@@ -5,11 +5,11 @@
             <div class="card shadow mb-4">
                 <div class="card-body text-center">
                     <a href="#!" class="avatar avatar-xl">
-                        <img src="<?= base_url('../assets/assets/images/kotak-suara.png') ?>" alt="">
+                        <img class="avatar-img rounded-circle" src="<?= base_url('../assets/assets/images/nafa.png') ?>" alt="">
                         <!-- <img src="./assets/avatars/face-4.jpg" alt="..." class="avatar-img rounded-circle"> -->
                     </a>
                     <div class="card-text my-2">
-                        <strong class="h5 card-title">Tabulasi Pemilih
+                        <strong class="h5 card-title">Tabulasi Pemilih Kecamatan
                             <?= session()->get('name'); ?>
                         </strong>
                         <br>

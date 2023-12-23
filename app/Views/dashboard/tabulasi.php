@@ -25,6 +25,7 @@
                                             <th>TPS</th>
                                             <th>Jumlah Pemilih</th>
                                             <th>Bukti Foto</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -36,7 +37,14 @@
                                         <td><?=$u->desa?></td>
                                         <td><?=$u->tps?></td>
                                         <td><?=$u->hasil?></td>
-                                        <td><a href="<?=base_url('tabulasi_assets/' . $u->foto)?>" target="_blank" class="fe fe-image fe-16"></a></td>
+                                        <td>
+                                        <?php if ($u->foto != ""): ?>
+                                            <a href="<?=base_url('tabulasi_assets/' . $u->foto)?>" target="_blank" class="fe fe-image fe-16"></a>
+                                         <?php else: ?>
+                                            -
+                                            <?php endif ?>
+                                        </td>
+                                        <td><a href="<?=base_url('dashboard/admin/edit-data-tabulasi/' . $u->id)?>" class="fe fe-edit fe-16"></a></td>
                                         <?php endforeach?>
                                     </tbody>
                                 </table>

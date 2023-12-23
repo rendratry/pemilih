@@ -37,6 +37,7 @@ class DashboardController extends BaseController
     {
         $data = [
             'title' => 'Pemilih',
+            'desa' => $this->tabulasimodel->getNamaDesaAll(),
         ];
         return view('dashboard/tabulasi_index', $data);
     }
@@ -57,6 +58,31 @@ class DashboardController extends BaseController
             'tabulasi' => $tabulasi
         ];
         return view('dashboard/tabulasi', $data);
+    }
+
+    public function updateTabulasi($id)
+    {
+        $newHasil = $this->request->getVar('hasil');
+        $dataUpdate =[
+            'hasil' => $newHasil
+        ];
+        $this->tabulasimodel->update($id, $dataUpdate);
+        session()->setFlashdata('success', 'Data Tabulasi Berhasil Di Update');
+        return redirect()->to(base_url('dashboard/admin/data-tabulasi'));
+    }
+
+    public function backToTabulasi()
+    {
+        return redirect()->to(base_url('dashboard/admin/data-tabulasi')); 
+    }
+
+    public function editTabulasiData($id)
+    {
+        $data = [
+            'title' => 'Pemilih',
+            'tabulasi' => $this->tabulasimodel->where('id', $id)->first(),
+        ];
+        return view('dashboard/edit_tabulasi', $data);
     }
 
     public function pemilihData()
@@ -277,5 +303,34 @@ class DashboardController extends BaseController
         ];
         return view('dashboard/quick_count', $data);
     }
+
+    public function getLatestData()
+{
+    $mejayanData = $this->tabulasimodel->getJumlahPemilihByKecamataN('MEJAYAN');
+    $saradanData = $this->tabulasimodel->getJumlahPemilihByKecamataN('SARADAN');
+
+    $mejayan = [
+        'labels' => array_column($mejayanData, 'desa'),
+        'data' => array_column($mejayanData, 'total_hasil')
+    ];
+
+    $saradan = [
+        'labels' => array_column($saradanData, 'desa'),
+        'data' => array_column($saradanData, 'total_hasil')
+    ];
+
+    $totalMejayan = array_sum(array_column($mejayanData, 'total_hasil'));
+    $totalSaradan = array_sum(array_column($saradanData, 'total_hasil'));
+
+    $latestData = [
+        'mejayan' => $mejayan,
+        'saradan' => $saradan,
+        'totalMejayan' => $totalMejayan,
+        'totalSaradan' => $totalSaradan,
+    ];
+
+    return $this->response->setJSON($latestData);
+}
+
 
 }

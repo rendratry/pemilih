@@ -32,18 +32,18 @@
                                 <div class="row mb-4">
                                     <div class="col-md-7">
                                         <p class="text-muted">Total Dapil 1 :</p>
-                                        <h1 class="mb-1"><i class="fe fe-users fe-16"></i> <?=$totalMejayan + $totalSaradan?></h1>
+                                        <h1 id="totalPemilih" class="mb-1"><i class="fe fe-users fe-16"></i> <?=$totalMejayan + $totalSaradan?></h1>
                                     </div>
                                     <div class="col">
                                         <div class="col-md-12">
                                             <p class="text-muted">Mejayan :</p>
-                                            <h3 class="mb-1"><i class="fe fe-users fe-16"></i> <?=$totalMejayan?></h3>
+                                            <h3 id="totalMejayan" class="mb-1"><i class="fe fe-users fe-16"></i> <?=$totalMejayan?></h3>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="col-md-12">
                                             <p class="text-muted">Saradan :</p>
-                                            <h3 class="mb-1"><i class="fe fe-users fe-16"></i> <?=$totalSaradan?></h3>
+                                            <h3 id="totalSaradan" class="mb-1"><i class="fe fe-users fe-16"></i> <?=$totalSaradan?></h3>
                                         </div>
                                     </div>
                                 </div>
@@ -84,13 +84,51 @@
     </div>
 </main>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Ambil elemen canvas
-        var ctx = document.getElementById('barChartjs1').getContext('2d');
+document.addEventListener('DOMContentLoaded', function () {
+    // Ambil elemen canvas
+    var ctx1 = document.getElementById('barChartjs1').getContext('2d');
+    var ctx2 = document.getElementById('barChartjs2').getContext('2d');
 
-        // Data untuk grafik
-        var data = {
-            labels:  <?= json_encode($mejayan['labels']) ?>,
+    // Fungsi untuk memperbarui grafik batang
+    function updateBarChart(chart, labels, data) {
+        chart.data.labels = labels;
+        chart.data.datasets[0].data = data;
+        chart.update();
+    }
+
+    // Fungsi untuk memanggil latest data dan memperbarui grafik
+    function fetchDataAndUpdateCharts() {
+        $.ajax({
+            url: '/dashboard/admin/get-latest-data',
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                // Perbarui total pemilih
+                $('#totalPemilih').html('<i class="fe fe-users fe-16"></i> ' + (data.totalMejayan + data.totalSaradan));
+                $('#totalMejayan').html('<i class="fe fe-users fe-16"></i> ' + data.totalMejayan);
+                $('#totalSaradan').html('<i class="fe fe-users fe-16"></i> ' + data.totalSaradan);
+
+
+                // Perbarui data grafik batang Mejayan
+                updateBarChart(myBarChart1, data.mejayan.labels, data.mejayan.data);
+
+                // Perbarui data grafik batang Saradan
+                updateBarChart(myBarChart2, data.saradan.labels, data.saradan.data);
+            },
+            error: function (error) {
+                console.error('Error fetching data:', error);
+            }
+        });
+    }
+
+    // Setel interval polling (misalnya, setiap 5 detik)
+    setInterval(fetchDataAndUpdateCharts, 5000);
+
+    // Inisialisasi grafik batang Mejayan
+    var myBarChart1 = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: <?= json_encode($mejayan['labels']) ?>,
             datasets: [{
                 label: 'Pemilih',
                 barThickness: 20,
@@ -104,32 +142,20 @@
                 data: <?= json_encode($mejayan['data']) ?>,
                 lineTension: 0.1,
             }]
-        };
-
-        // Konfigurasi grafik
-        var options = {
+        },
+        options: {
             scales: {
                 y: {
                     beginAtZero: true
                 }
             }
-        };
-
-        // Buat objek grafik batang
-        var myBarChart = new Chart(ctx, {
-            type: 'bar',
-            data: data,
-            options: options
-        });
+        }
     });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Ambil elemen canvas
-        var ctx = document.getElementById('barChartjs2').getContext('2d');
 
-        // Data untuk grafik
-        var data = {
+    // Inisialisasi grafik batang Saradan
+    var myBarChart2 = new Chart(ctx2, {
+        type: 'bar',
+        data: {
             labels: <?= json_encode($saradan['labels']) ?>,
             datasets: [{
                 label: 'Pemilih',
@@ -144,24 +170,16 @@
                 data: <?= json_encode($saradan['data']) ?>,
                 lineTension: 0.2,
             }]
-        };
-
-        // Konfigurasi grafik
-        var options = {
+        },
+        options: {
             scales: {
                 y: {
                     beginAtZero: true
                 }
             }
-        };
-
-        // Buat objek grafik batang
-        var myBarChart = new Chart(ctx, {
-            type: 'bar',
-            data: data,
-            options: options
-        });
+        }
     });
+});
 </script>
 
 <?php echo $this->include('master_partial/dashboard/footer'); ?>
