@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Models\PemilihModel;
 use App\Models\TabulasiModel;
 
 class DashboardController extends BaseController
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->tabulasimodel = new TabulasiModel();
         $this->pemilihmodel = new PemilihModel();
         $this->validation = \Config\Services::validation();
@@ -23,26 +25,29 @@ class DashboardController extends BaseController
         return view('dashboard/dashboard', $data);
     }
 
-    public function pemilihView() {
+    public function pemilihView()
+    {
         $data = [
             'title' => 'Pemilih',
         ];
         return view('dashboard/pemilih_index', $data);
     }
 
-    public function tabulasiView() {
+    public function tabulasiView()
+    {
         $data = [
             'title' => 'Pemilih',
         ];
         return view('dashboard/tabulasi_index', $data);
     }
 
-    public function tabulasiData(){
+    public function tabulasiData()
+    {
         $kecamatan = $this->request->getVar('kecamatan');
         $desa = $this->request->getVar('desa');
 
         $tabulasi = $this->tabulasimodel->getDataTabulasiByKecamatanDesa($kecamatan, $desa);
-        if (!$tabulasi){
+        if (!$tabulasi) {
             session()->setFlashdata('error', 'Data pemilih tidak ditemukan');
             return redirect()->to(base_url('dashboard/admin/data-tabulasi'));
         }
@@ -54,13 +59,14 @@ class DashboardController extends BaseController
         return view('dashboard/tabulasi', $data);
     }
 
-    public function pemilihData() {
+    public function pemilihData()
+    {
         $kecamatan = $this->request->getVar('kecamatan');
         $desa = $this->request->getVar('desa');
 
         $pemilih = $this->pemilihmodel->getPemilihByKecamatanDesa($kecamatan, strtoupper($desa));
 
-        if (!$pemilih){
+        if (!$pemilih) {
             session()->setFlashdata('error', 'Data pemilih tidak ditemukan');
             return redirect()->to(base_url('dashboard/admin/data-pemilih'));
         }
@@ -72,9 +78,10 @@ class DashboardController extends BaseController
         return view('dashboard/pemilih', $data);
     }
 
-    public function updateChecklist() {
+    public function updateChecklist()
+    {
         $checkedItems = $this->request->getVar('checklist');
-    
+
         if (!empty($checkedItems)) {
             foreach ($checkedItems as $id) {
                 // Ambil status checklist saat ini
@@ -82,16 +89,16 @@ class DashboardController extends BaseController
                     ->select('checklist')
                     ->where('id', $id)
                     ->first();
-    
+
                 if ($currentStatus) {
                     // Tentukan nilai baru berdasarkan status saat ini
                     $newStatus = !$currentStatus->checklist; // Ini akan mengubah true menjadi false dan sebaliknya
-    
+
                     // Update kolom 'checklist' dengan nilai baru
                     $dataToUpdate = [
                         'checklist' => $newStatus,
                     ];
-    
+
                     // Gantilah 'nama_tabel' dengan nama tabel yang sesuai dalam database Anda
                     $this->pemilihmodel
                         ->where('id', $id)
@@ -99,17 +106,18 @@ class DashboardController extends BaseController
                         ->update();
                 }
             }
-    
+
             session()->setFlashdata('success', 'Update checklist berhasil');
         } else {
             session()->setFlashdata('error', 'Tidak ada update checklist');
         }
-    
+
         return redirect()->to(base_url('dashboard/admin/data-pemilih'));
     }
-    
 
-    public function importPage() {
+
+    public function importPage()
+    {
         $data = [
             'title' => 'Pemilih',
         ];
@@ -117,23 +125,24 @@ class DashboardController extends BaseController
     }
 
     //IMPORT DEFAULT PRODUCTION
-    public function importPemilih() {
+    public function importPemilih()
+    {
         $kecamatan = $this->request->getVar('kecamatan');
         $file = $this->request->getFile('excel_file');
-        
+
         $extension = $file->getClientExtension();
-        if($extension == 'xlsx' || $extension == 'xls'){
-            if($extension == 'xls'){
+        if ($extension == 'xlsx' || $extension == 'xls') {
+            if ($extension == 'xls') {
                 $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
-            }else{
+            } else {
                 $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
             }
-       
+
             $spreadsheet = $reader->load($file);
 
             $sheets = $spreadsheet->getAllSheets(); // Mendapatkan semua sheet dalam file Excel
             $tps = 1; // Inisialisasi nilai TPS
-    
+
             foreach ($sheets as $sheet) {
                 $dataPemilih = $sheet->toArray();
                 for ($i = 11; $i < count($dataPemilih); $i++) {
@@ -143,7 +152,7 @@ class DashboardController extends BaseController
                     $desa_kelurahan = $dataPemilih[$i][4]; // Kolom Desa/Kelurahan (E)
                     $rt = $dataPemilih[$i][5]; // Kolom RT (F)
                     $rw = $dataPemilih[$i][6]; // Kolom RW (G)
-    
+
                     // Proses insert ke dalam database sesuai dengan data yang telah diambil
                     // Gantilah query dan model sesuai dengan struktur dan kebutuhan database Anda
                     $pemilihModel = new PemilihModel(); // Gantilah dengan nama model yang sesuai
@@ -158,16 +167,16 @@ class DashboardController extends BaseController
                         'rt' => $rt,
                         'rw' => $rw,
                         'tps' => $tps,
-                        'checklist' => false// Menggunakan nilai TPS yang sesuai
+                        'checklist' => false // Menggunakan nilai TPS yang sesuai
                     ];
-    
+
                     // Insert data ke dalam database
                     $pemilihModel->insert($data);
                 }
-    
+
                 $tps++; // Tambahkan nilai TPS untuk sheet berikutnya
             }
-    
+
             session()->setFlashdata('success', 'Data pemilih berhasil diimpor');
             return redirect()->to(base_url('dashboard/admin/import'));
         } else {
@@ -180,23 +189,24 @@ class DashboardController extends BaseController
 
 
     // IMPORT CUSTOM DISINI
-    public function importPemilihCustom() {
+    public function importPemilihCustom()
+    {
         $kecamatan = $this->request->getVar('kecamatan');
         $file = $this->request->getFile('excel_file');
-        
+
         $extension = $file->getClientExtension();
-        if($extension == 'xlsx' || $extension == 'xls'){
-            if($extension == 'xls'){
+        if ($extension == 'xlsx' || $extension == 'xls') {
+            if ($extension == 'xls') {
                 $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
-            }else{
+            } else {
                 $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
             }
-       
+
             $spreadsheet = $reader->load($file);
 
             $sheets = $spreadsheet->getAllSheets(); // Mendapatkan semua sheet dalam file Excel
             $tps = 1; // Inisialisasi nilai TPS
-    
+
             foreach ($sheets as $sheet) {
                 $dataPemilih = $sheet->toArray();
                 //$i adalah mulai data
@@ -207,7 +217,7 @@ class DashboardController extends BaseController
                     $desa_kelurahan = $dataPemilih[$i][4]; // Kolom Desa/Kelurahan (E)
                     $rt = $dataPemilih[$i][5]; // Kolom RT (F)
                     $rw = $dataPemilih[$i][6]; // Kolom RW (G)
-    
+
                     // Proses insert ke dalam database sesuai dengan data yang telah diambil
                     // Gantilah query dan model sesuai dengan struktur dan kebutuhan database Anda
                     $pemilihModel = new PemilihModel(); // Gantilah dengan nama model yang sesuai
@@ -222,16 +232,16 @@ class DashboardController extends BaseController
                         'rt' => $rt,
                         'rw' => $rw,
                         'tps' => $tps,
-                        'checklist' => false// Menggunakan nilai TPS yang sesuai
+                        'checklist' => false // Menggunakan nilai TPS yang sesuai
                     ];
-    
+
                     // Insert data ke dalam database
                     $pemilihModel->insert($data);
                 }
-    
+
                 $tps++; // Tambahkan nilai TPS untuk sheet berikutnya
             }
-    
+
             session()->setFlashdata('success', 'Data pemilih berhasil diimpor');
             return redirect()->to(base_url('dashboard/admin/import'));
         } else {
@@ -239,8 +249,30 @@ class DashboardController extends BaseController
         }
     }
 
-    public function quickCount(){
+    public function quickCount()
+    {
+        $mejayanData = $this->tabulasimodel->getJumlahPemilihByKecamataN('MEJAYAN');
+        $saradanData = $this->tabulasimodel->getJumlahPemilihByKecamataN('SARADAN');
+
+        $mejayan = [
+            'labels' => array_column($mejayanData, 'desa'),
+            'data' => array_column($mejayanData, 'total_hasil')
+        ];
+
+        $saradan = [
+            'labels' => array_column($saradanData, 'desa'),
+            'data' => array_column($saradanData, 'total_hasil')
+        ];
+
+        // Menghitung total jumlah hasil per kecamatan
+        $totalMejayan = array_sum(array_column($mejayanData, 'total_hasil'));
+        $totalSaradan = array_sum(array_column($saradanData, 'total_hasil'));
+
         $data = [
+            'mejayan' => $mejayan,
+            'saradan' => $saradan,
+            'totalMejayan' => $totalMejayan,
+            'totalSaradan' => $totalSaradan,
             'title' => 'Quick Count',
         ];
         return view('dashboard/quick_count', $data);

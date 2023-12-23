@@ -79,10 +79,5 @@ class TabulasiController extends BaseController {
             return redirect()->to(base_url('tabulasi/tps'))->with('status_icon', 'error')->with('status_text', 'Gagal Upload, Mohon Ulangi Kembali');
             // Jika tidak ditemukan record, Anda mungkin ingin melakukan sesuatu, seperti menampilkan pesan kesalahan atau menangani secara sesuai dengan logika aplikasi Anda.
         }
-        // if ($insert){
-        //     return redirect()->to(base_url('tabulasi/tps'))->with('status_icon', 'success')->with('status_text', 'Data Berhasil Diinput');
-        // } else {
-        //     return redirect()->to(base_url('tabulasi/tps'))->with('status_icon', 'error')->with('status_text', 'Gagal Upload, Mohon Ulangi Kembali');
-        // }
     }
 }

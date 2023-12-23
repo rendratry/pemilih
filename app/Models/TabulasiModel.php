@@ -1,11 +1,13 @@
 <?php
 namespace App\Models;
+
 use CodeIgniter\Model;
 
-class TabulasiModel extends Model {
-    protected $table            = 'tabulasi';
-    protected $primaryKey       = 'id';
-    protected $returnType       = 'object';
+class TabulasiModel extends Model
+{
+    protected $table = 'tabulasi';
+    protected $primaryKey = 'id';
+    protected $returnType = 'object';
     protected $allowedFields = ['id', 'kecamatan', 'desa', 'tps', 'hasil', 'foto', 'edited_by'];
 
     public function getNamaDesa($kecamatan)
@@ -27,12 +29,13 @@ class TabulasiModel extends Model {
         return $builder->get()->getResultArray();
     }
 
-    public function getIdByDesaTps($desa, $tps){
+    public function getIdByDesaTps($desa, $tps)
+    {
         $result = $this->select('id')
-                       ->where('desa', $desa)
-                       ->where('tps', $tps)
-                       ->first();
-    
+            ->where('desa', $desa)
+            ->where('tps', $tps)
+            ->first();
+
         if ($result) {
             return $result->id;
         } else {
@@ -41,9 +44,21 @@ class TabulasiModel extends Model {
         }
     }
 
-    public function getDataTabulasiByKecamatanDesa($kecamatan, $desa_kelurahan) {
+    public function getDataTabulasiByKecamatanDesa($kecamatan, $desa_kelurahan)
+    {
         return $this->where('kecamatan', $kecamatan)
-                    ->where('desa', $desa_kelurahan)
-                    ->findAll();
+            ->where('desa', $desa_kelurahan)
+            ->findAll();
+    }
+
+    public function getJumlahPemilihByKecamatan($kecamatan)
+    {
+        $query = $this->db->table('tabulasi');
+        $query->select('desa, SUM(hasil) as total_hasil');
+        $query->where('kecamatan', $kecamatan);
+        $query->groupBy('desa');
+
+        $result = $query->get()->getResult();
+        return $result;
     }
 }

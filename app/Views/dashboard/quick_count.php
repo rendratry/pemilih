@@ -32,18 +32,18 @@
                                 <div class="row mb-4">
                                     <div class="col-md-7">
                                         <p class="text-muted">Total Dapil 1 :</p>
-                                        <h1 class="mb-1"><i class="fe fe-users fe-16"></i> 700</h1>
+                                        <h1 class="mb-1"><i class="fe fe-users fe-16"></i> <?=$totalMejayan + $totalSaradan?></h1>
                                     </div>
                                     <div class="col">
                                         <div class="col-md-12">
                                             <p class="text-muted">Mejayan :</p>
-                                            <h3 class="mb-1"><i class="fe fe-users fe-16"></i> 350</h3>
+                                            <h3 class="mb-1"><i class="fe fe-users fe-16"></i> <?=$totalMejayan?></h3>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="col-md-12">
                                             <p class="text-muted">Saradan :</p>
-                                            <h3 class="mb-1"><i class="fe fe-users fe-16"></i> 350</h3>
+                                            <h3 class="mb-1"><i class="fe fe-users fe-16"></i> <?=$totalSaradan?></h3>
                                         </div>
                                     </div>
                                 </div>
@@ -90,10 +90,10 @@
 
         // Data untuk grafik
         var data = {
-            labels: ['Label 1', 'Label 2', 'Label 3', 'Label 4'],
+            labels:  <?= json_encode($mejayan['labels']) ?>,
             datasets: [{
-                label: 'Data Set 1',
-                barThickness: 50,
+                label: 'Pemilih',
+                barThickness: 20,
                 backgroundColor: base.primaryColor,
                 borderColor: base.primaryColor,
                 pointRadius: !1,
@@ -101,7 +101,7 @@
                 pointStrokeColor: "rgba(60,141,188,1)",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(60,141,188,1)",
-                data: [19, 64, 37, 70],
+                data: <?= json_encode($mejayan['data']) ?>,
                 lineTension: 0.1,
             }]
         };
@@ -130,10 +130,10 @@
 
         // Data untuk grafik
         var data = {
-            labels: ['Label 1', 'Label 2', 'Label 3', 'Label 4'],
+            labels: <?= json_encode($saradan['labels']) ?>,
             datasets: [{
-                label: 'Data Set 1',
-                barThickness: 50,
+                label: 'Pemilih',
+                barThickness: 20,
                 backgroundColor: base.primaryColor,
                 borderColor: base.primaryColor,
                 pointRadius: !1,
@@ -141,7 +141,7 @@
                 pointStrokeColor: "rgba(60,141,188,1)",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(60,141,188,1)",
-                data: [19, 64, 37, 76],
+                data: <?= json_encode($saradan['data']) ?>,
                 lineTension: 0.2,
             }]
         };
